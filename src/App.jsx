@@ -3,15 +3,33 @@ import React from 'react';
 const App = () => {
   const handleDownload = () => {
     const downloadUrl = `https://stream-excel.onrender.com/download-excel`;
+    const token = 'your_token_here'; // Replace with your actual token
 
-    const a = document.createElement('a');
-    a.href = downloadUrl;
-    a.setAttribute('download', '');
-    a.setAttribute('rel', 'noopener noreferrer');
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', downloadUrl, true);
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    xhr.responseType = 'blob';
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const url = window.URL.createObjectURL(xhr.response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'file.xlsx'; // Specify the file name
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error('Failed to download file:', xhr.statusText);
+      }
+    };
+
+    xhr.onerror = () => {
+      console.error('Network error while downloading file');
+    };
+
+    xhr.send();
   };
 
   return (
