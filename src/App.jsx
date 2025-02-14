@@ -2,7 +2,7 @@ import React from 'react';
 
 const App = () => {
   const handleDownload = () => {
-    const downloadUrl = https://stream-excel.onrender.com/download-excel;
+    const downloadUrl = `https://stream-excel.onrender.com/download-excel`;
 
     const a = document.createElement('a');
     a.href = downloadUrl;
